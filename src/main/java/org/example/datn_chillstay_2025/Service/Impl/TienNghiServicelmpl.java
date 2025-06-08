@@ -1,4 +1,4 @@
-package org.example.datn_chillstay_2025.Service.lmpl;
+package org.example.datn_chillstay_2025.Service.Impl;
 
 import org.example.datn_chillstay_2025.Entity.TienNghi;
 import org.example.datn_chillstay_2025.Repository.TienNghiRepo;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class TienNghiServicelmpl implements TienNghiService {
