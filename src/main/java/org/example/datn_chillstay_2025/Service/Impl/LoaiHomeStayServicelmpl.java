@@ -1,4 +1,4 @@
-package org.example.datn_chillstay_2025.Service.lmpl;
+package org.example.datn_chillstay_2025.Service.Impl;
 
 import org.example.datn_chillstay_2025.Entity.LoaiHomeStay;
 import org.example.datn_chillstay_2025.Repository.LoaiHomeStayRepo;
