@@ -13,11 +13,11 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("tien-nghi")
+@RequestMapping("api/tien-nghi")
 public class TienNghiController {
     private final TienNghiService tienNghiService;
 
-    @GetMapping("hien-thi")
+    @GetMapping("/all")
     public ResponseEntity <List<TienNghi>> hienThi(){
         List<TienNghi> tienNghi = tienNghiService.getTienNghi();
         return ResponseEntity.ok(tienNghi);
