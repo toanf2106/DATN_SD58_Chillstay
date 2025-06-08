@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,4 +42,21 @@ private final HomeStayService homeStayService;
          homeStayService.addHomeStay(homeStay);
         return ResponseEntity.ok(homeStay);
     }
+@PutMapping("/delete/{id}")
+    public ResponseEntity<String> deleteHomeStay(@PathVariable int id) {
+        homeStayService.deleteHomeStay(id);
+        return ResponseEntity.ok("Xóa thành công");
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<HomeStay> updateHomeStay(@RequestBody HomeStay homeStay, @PathVariable int id) {
+        HomeStay updatedHomeStay = homeStayService.updateHomeStay(homeStay, id);
+        if (updatedHomeStay != null) {
+            return ResponseEntity.ok(updatedHomeStay);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 }

@@ -3,9 +3,9 @@ package org.example.datn_chillstay_2025.Service.Impl;
 import java.util.List;
 import java.util.Optional;
 import org.example.datn_chillstay_2025.Entity.LoaiHomeStay;
-import org.example.datn_chillstay_2025.Entity.TienNghi;
+
 import org.example.datn_chillstay_2025.Repository.LoaiHomeStayRepo;
-import org.example.datn_chillstay_2025.Repository.TienNghiRepo;
+
 import org.example.datn_chillstay_2025.Service.LoaiHomeStayService;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Primary;
