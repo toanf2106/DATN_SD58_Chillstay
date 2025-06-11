@@ -1,5 +1,6 @@
 package org.example.datn_chillstay_2025.Entity;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -7,16 +8,20 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Nationalized;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Entity
-public class AnhHomeStay {
+public class AnhPhong {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     private Integer id;
 
-    @JoinColumn(name = "HomeStay_ID", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "Phong_ID", nullable = false)
+    private Phong idphong;
 
     @Size(max = 255)
     @NotNull
