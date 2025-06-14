@@ -8,7 +8,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
@@ -18,14 +17,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Nationalized;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "AnhHomeStay")
-public class AnhHomeStay {
+public class KhachHang {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,18 +31,35 @@ public class AnhHomeStay {
 
   @NotNull
   @ManyToOne
-  @JoinColumn(name = "HomeStay_ID", nullable = false)
-  private HomeStay homeStay;
+  @JoinColumn(name = "TaiKhoan_ID", nullable = false)
+  private org.example.datn_chillstay_2025.Entity.TaiKhoan taiKhoan;
 
-  @Size(max = 255)
+  @Size(max = 50)
+  @Column(name = "Ma_Khach_Hang", length = 50)
+  private String maKhachHang;
+
+  @Size(max = 100)
+  @NotNull
+  @Column(name = "Ho_Ten", nullable = false, length = 100)
+  private String hoTen;
+
+  @Size(max = 20)
   @NotNull
   @Nationalized
-  @Column(name = "Duong_Dan_Anh", nullable = false)
-  private String duongDanAnh;
+  @Column(name = "So_Dien_Thoai", nullable = false, length = 20)
+  private String soDienThoai;
+
+  @Size(max = 100)
+  @NotNull
+  @Column(name = "Email", nullable = false, length = 100)
+  private String email;
+
+  @Column(name = "Gioi_Tinh")
+  private Boolean gioiTinh;
 
   @ColumnDefault("getdate()")
-  @Column(name = "Ngay_Upload")
-  private LocalDate ngayUpload;
+  @Column(name = "Ngay_Tao")
+  private LocalDate ngayTao;
 
   @NotNull
   @ColumnDefault("1")

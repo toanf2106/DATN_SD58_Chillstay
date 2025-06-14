@@ -1,13 +1,15 @@
 package org.example.datn_chillstay_2025.Entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.Transient;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,40 +21,34 @@ import org.hibernate.annotations.Nationalized;
 @Getter
 @Setter
 @Entity
-public class ChuHomeStay {
+public class HomeStayTienNghi {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", nullable = false)
   private Integer id;
 
+  @NotNull
+  @ManyToOne
+  @JoinColumn(name = "HomeStay_ID", nullable = false)
+  private HomeStay homeStay;
+
+  @NotNull
+  @ManyToOne
+  @JoinColumn(name = "TienNghi_ID", nullable = false)
+  private TienNghi tienNghi;
+
+  @Size(max = 50)
   @Nationalized
-  @Column(name = "Ma_Chu_HomeStay", nullable = false, length = 50)
-  private String maChuHomestay;
+  @Column(name = "Ma_HomeStay_TienNghi", length = 50)
+  private String maHomestayTiennghi;
 
-  @Nationalized
-  @Column(name = "HoTen_Chu_HomeStay", nullable = false, length = 100)
-  private String hotenChuHomestay;
+  @Column(name = "So_Luong")
+  private Integer soLuong;
 
-  @Nationalized
-  @Column(name = "So_Dien_Thoai", length = 15)
-  private String soDienThoai;
-
-  @Nationalized
-  @Lob
-  @Column(name = "Dia_Chi")
-  private String diaChi;
-
-  @Nationalized
-  @Column(name = "Que_Quan", length = 100)
-  private String queQuan;
-
-  @Column(name = "Gioi_Tinh")
-  private Boolean gioiTinh;
-
+  @NotNull
   @ColumnDefault("1")
   @Column(name = "Trang_Thai", nullable = false)
   private Boolean trangThai = false;
-
 
 }
