@@ -49,13 +49,6 @@ public class ChuHomeStay {
   @ColumnDefault("1")
   @Column(name = "Trang_Thai", nullable = false)
   private Boolean trangThai = false;
-//  @Transient
-//  @JsonProperty("gioiTinhText")
-//  public String getGioiTinhText() {
-//    if (gioiTinh == null) {
-//      return "Không rõ";
-//    }
-//    return gioiTinh ? "Nữ" : "Nam";
-//  }
+
 
 }

@@ -41,7 +41,7 @@ public class AnhHomeStayServicelmpl implements AnhHomeStayService {
         Optional<AnhHomeStay> optional = anhHomeStayRepo.findById(id);
         if (optional.isPresent()) {
             AnhHomeStay existingAnhHomeStay = optional.get();
-            existingAnhHomeStay.setIdHomeStay(anhHomeStay.getIdHomeStay());
+            existingAnhHomeStay.setHomeStay(anhHomeStay.getHomeStay());
             existingAnhHomeStay.setDuongDanAnh(anhHomeStay.getDuongDanAnh());
 //            existingAnhHomeStay.setNgayUpload(anhHomeStay.getNgayUpload());
             existingAnhHomeStay.setTrangThai(anhHomeStay.getTrangThai());
