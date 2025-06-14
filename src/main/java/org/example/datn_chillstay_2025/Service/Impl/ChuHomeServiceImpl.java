@@ -101,7 +101,7 @@ public class ChuHomeServiceImpl implements ChuHomeService {
               loaiHomeStay1.setTenLoaiHomestay(loaiHomeStay.getTenLoaiHomestay());
               loaiHomeStay1.setMoTa(loaiHomeStay.getMoTa());
               loaiHomeStay1.setNgayTao(loaiHomeStay.getNgayTao());
-              loaiHomeStay1.setNgayUpdate(loaiHomeStay.getNgayUpdate());
+//              loaiHomeStay1.setNgayUpdate(loaiHomeStay.getNgayUpdate());
               return loaiHomeStayRepo.save(loaiHomeStay1);
           }else {
               throw new RuntimeException("LoaiHomeStay id not found");

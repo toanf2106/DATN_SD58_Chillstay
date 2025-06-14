@@ -38,8 +38,8 @@ public class LoaiHomeStay {
     @Column(name = "Ngay_Tao")
     private LocalDate ngayTao;
 
-    @Column(name = "Ngay_Update")
-    private LocalDate ngayUpdate;
+//    @Column(name = "Ngay_Update")
+//    private LocalDate ngayUpdate;
 
     @Column(name = "Trang_Thai")
     private boolean trangThai;

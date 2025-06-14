@@ -10,22 +10,18 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.Nationalized;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "AnhHomeStay")
-public class AnhHomeStay {
+@Table(name = "VatTuPhong")
+public class VatTuPhong {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,18 +30,17 @@ public class AnhHomeStay {
 
   @NotNull
   @ManyToOne
-  @JoinColumn(name = "HomeStay_ID", nullable = false)
-  private HomeStay homeStay;
+  @JoinColumn(name = "Phong_ID", nullable = false)
+  private Phong phong;
 
-  @Size(max = 255)
   @NotNull
-  @Nationalized
-  @Column(name = "Duong_Dan_Anh", nullable = false)
-  private String duongDanAnh;
+  @ManyToOne
+  @JoinColumn(name = "VatTu_ID", nullable = false)
+  private VatTu vatTu;
 
-  @ColumnDefault("getdate()")
-  @Column(name = "Ngay_Upload")
-  private LocalDate ngayUpload;
+  @NotNull
+  @Column(name = "So_Luong", nullable = false)
+  private Integer soLuong;
 
   @NotNull
   @ColumnDefault("1")
