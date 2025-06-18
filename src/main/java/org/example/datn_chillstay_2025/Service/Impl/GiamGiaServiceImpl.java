@@ -1,11 +1,5 @@
 package org.example.datn_chillstay_2025.Service.Impl;
 
-//import com.example.giam_gia.dto.GiamGiaDTO;
-//import com.example.giam_gia.model.GiamGia;
-//import com.example.giam_gia.model.HomeStay;
-//import com.example.giam_gia.repository.GiamGiaRepo;
-//import com.example.giam_gia.repository.HomestayRepository;
-//import com.example.giam_gia.service.GiamGiaService;
 import org.example.datn_chillstay_2025.Dto.GiamGiaDTO;
 import org.example.datn_chillstay_2025.Entity.GiamGia;
 import org.example.datn_chillstay_2025.Entity.HomeStay;
@@ -17,8 +11,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Service
-public class GiamGiaServiceImpl  implements GiamGiaService {
+public class GiamGiaServiceImpl implements GiamGiaService {
+
     @Autowired
     private GiamGiaRepo giamGiaRepository;
 
@@ -64,16 +60,25 @@ public class GiamGiaServiceImpl  implements GiamGiaService {
         giamGiaRepository.deleteById(id);
     }
 
+    @Override
+    public List<GiamGiaDTO> findByTenGiamGia(String tenGiamGia) {
+        return giamGiaRepository.findByTenGiamGiaContainingIgnoreCase(tenGiamGia)
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
     private GiamGia mapToEntity(GiamGiaDTO dto) {
         GiamGia giamGia = new GiamGia();
         giamGia.setMaGiamGia(dto.getMaGiamGia());
+        giamGia.setTenGiamGia(dto.getTenGiamGia());
         giamGia.setLoaiGiamGia(dto.getLoaiGiamGia());
         giamGia.setGiaTri(dto.getGiaTri());
         giamGia.setGiaTriToiThieu(dto.getGiaTriToiThieu());
         giamGia.setNgayBatDau(dto.getNgayBatDau());
         giamGia.setNgayKetThuc(dto.getNgayKetThuc());
         giamGia.setSoLuong(dto.getSoLuong());
-        giamGia.setTrangThai(dto.getTrangThai());
+        giamGia.setTrangThai(dto.getTrangThai() != null ? dto.getTrangThai() : true);
         if (dto.getHomeStayId() != null) {
             HomeStay homeStay = homeStayRepository.findById(dto.getHomeStayId())
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy homestay với ID: " + dto.getHomeStayId()));
@@ -86,6 +91,7 @@ public class GiamGiaServiceImpl  implements GiamGiaService {
         GiamGiaDTO dto = new GiamGiaDTO();
         dto.setId(giamGia.getId());
         dto.setMaGiamGia(giamGia.getMaGiamGia());
+        dto.setTenGiamGia(giamGia.getTenGiamGia());
         dto.setLoaiGiamGia(giamGia.getLoaiGiamGia());
         dto.setGiaTri(giamGia.getGiaTri());
         dto.setGiaTriToiThieu(giamGia.getGiaTriToiThieu());
@@ -101,13 +107,14 @@ public class GiamGiaServiceImpl  implements GiamGiaService {
 
     private void updateEntityFromDTO(GiamGia giamGia, GiamGiaDTO dto) {
         giamGia.setMaGiamGia(dto.getMaGiamGia());
+        giamGia.setTenGiamGia(dto.getTenGiamGia());
         giamGia.setLoaiGiamGia(dto.getLoaiGiamGia());
         giamGia.setGiaTri(dto.getGiaTri());
         giamGia.setGiaTriToiThieu(dto.getGiaTriToiThieu());
         giamGia.setNgayBatDau(dto.getNgayBatDau());
         giamGia.setNgayKetThuc(dto.getNgayKetThuc());
         giamGia.setSoLuong(dto.getSoLuong());
-        giamGia.setTrangThai(dto.getTrangThai());
+        giamGia.setTrangThai(dto.getTrangThai() != null ? dto.getTrangThai() : true);
         if (dto.getHomeStayId() != null) {
             HomeStay homeStay = homeStayRepository.findById(dto.getHomeStayId())
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy homestay với ID: " + dto.getHomeStayId()));

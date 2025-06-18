@@ -13,6 +13,7 @@ import java.time.LocalDate;
 public class GiamGiaDTO {
     private Integer id;
     private String maGiamGia;
+    private String tenGiamGia;
     private String loaiGiamGia;
     private BigDecimal giaTri;
     private Integer homeStayId;
