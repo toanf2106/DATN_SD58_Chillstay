@@ -8,18 +8,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/giamgia")
 public class GiamGiaController {
 
 
-    final  GiamGiaService giamGiaService;
+    final GiamGiaService giamGiaService;
 
-  public GiamGiaController(GiamGiaService giamGiaService) {
-    this.giamGiaService = giamGiaService;
-  }
+    public GiamGiaController(GiamGiaService giamGiaService) {
+        this.giamGiaService = giamGiaService;
+    }
 
-  @PostMapping
+    @PostMapping
     public ResponseEntity<GiamGiaDTO> createGiamGia(@RequestBody GiamGiaDTO giamGiaDTO) {
         GiamGiaDTO created = giamGiaService.createGiamGia(giamGiaDTO);
         return ResponseEntity.ok(created);
