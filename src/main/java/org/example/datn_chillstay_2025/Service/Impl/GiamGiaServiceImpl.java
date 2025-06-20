@@ -7,6 +7,8 @@ import org.example.datn_chillstay_2025.Repository.GiamGiaRepo;
 import org.example.datn_chillstay_2025.Repository.HomeStayRepo;
 import org.example.datn_chillstay_2025.Service.GiamGiaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,24 +47,22 @@ public class GiamGiaServiceImpl implements GiamGiaService {
     }
 
     @Override
-    public List<GiamGiaDTO> getAllGiamGia() {
-        return giamGiaRepository.findAll()
-                .stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
+    public Page<GiamGiaDTO> getAllGiamGia(Pageable pageable) {
+        Page<GiamGia> giamGiaPage = giamGiaRepository.findByTrangThaiTrue(pageable);
+        return giamGiaPage.map(this::mapToDTO);
     }
 
     @Override
     public void deleteGiamGia(Integer id) {
-        if (!giamGiaRepository.existsById(id)) {
-            throw new RuntimeException("Không tìm thấy mã giảm giá với ID: " + id);
-        }
-        giamGiaRepository.deleteById(id);
+        GiamGia giamGia = giamGiaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy mã giảm giá với ID: " + id));
+        giamGia.setTrangThai(false);
+        giamGiaRepository.save(giamGia);
     }
 
     @Override
     public List<GiamGiaDTO> findByTenGiamGia(String tenGiamGia) {
-        return giamGiaRepository.findByTenGiamGiaContainingIgnoreCase(tenGiamGia)
+        return giamGiaRepository.findByTenGiamGiaContainingIgnoreCaseAndTrangThaiTrue(tenGiamGia)
                 .stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
@@ -72,7 +72,22 @@ public class GiamGiaServiceImpl implements GiamGiaService {
         GiamGia giamGia = new GiamGia();
         giamGia.setMaGiamGia(dto.getMaGiamGia());
         giamGia.setTenGiamGia(dto.getTenGiamGia());
-        giamGia.setLoaiGiamGia(dto.getLoaiGiamGia());
+
+        // Validate and normalize loaiGiamGia
+        String loaiGiamGia = dto.getLoaiGiamGia();
+        if (loaiGiamGia == null) {
+            throw new IllegalArgumentException("Loại giảm giá không được để trống");
+        }
+        // Normalize to match database constraint
+        if ("Phần trăm".equalsIgnoreCase(loaiGiamGia) || "PhanTram".equalsIgnoreCase(loaiGiamGia)) {
+            loaiGiamGia = "PhanTram";
+        } else if ("Số tiền".equalsIgnoreCase(loaiGiamGia) || "SoTien".equalsIgnoreCase(loaiGiamGia)) {
+            loaiGiamGia = "SoTien";
+        } else {
+            throw new IllegalArgumentException("Loại giảm giá phải là 'PhanTram' hoặc 'SoTien'");
+        }
+        giamGia.setLoaiGiamGia(loaiGiamGia);
+
         giamGia.setGiaTri(dto.getGiaTri());
         giamGia.setGiaTriToiThieu(dto.getGiaTriToiThieu());
         giamGia.setNgayBatDau(dto.getNgayBatDau());
@@ -106,7 +121,9 @@ public class GiamGiaServiceImpl implements GiamGiaService {
     }
 
     private void updateEntityFromDTO(GiamGia giamGia, GiamGiaDTO dto) {
-        giamGia.setMaGiamGia(dto.getMaGiamGia());
+        // Không cập nhật maGiamGia từ DTO vì nó là READ_ONLY
+        // giamGia.setMaGiamGia(dto.getMaGiamGia());
+        
         giamGia.setTenGiamGia(dto.getTenGiamGia());
         giamGia.setLoaiGiamGia(dto.getLoaiGiamGia());
         giamGia.setGiaTri(dto.getGiaTri());
