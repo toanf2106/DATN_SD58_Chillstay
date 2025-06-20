@@ -2,6 +2,8 @@ package org.example.datn_chillstay_2025.Service;
 
 import java.util.List;
 import org.example.datn_chillstay_2025.Entity.VatTu;
+
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,4 +14,6 @@ public interface VatTuService {
   VatTu saveVatTu(VatTu vatTu);
   VatTu updateVatTu(Integer id, VatTu vatTu);
   void deleteVatTu(Integer id);
+  void khoiPhucVatTu(Integer id);
+  Page<VatTu> getVatTuByPage(int page, int size);
 }

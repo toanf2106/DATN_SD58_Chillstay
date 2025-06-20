@@ -147,5 +147,17 @@
                     .orElseThrow(() -> new RuntimeException("Tien Nghi Not Found"));
         }
 
+        @Override
+        public void khoiPhucTienNghi(Integer id) {
+            Optional<TienNghi> optional = tienNghiRepo.findById(id);
+            if (optional.isPresent()) {
+                TienNghi tienNghi = optional.get();
+                tienNghi.setTrangThai(true);
+                tienNghiRepo.save(tienNghi);
+            } else {
+                throw new RuntimeException("Tien Nghi Not Found");
+            }
+        }
+
     }
   }

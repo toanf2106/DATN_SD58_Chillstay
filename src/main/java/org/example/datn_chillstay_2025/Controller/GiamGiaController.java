@@ -1,6 +1,7 @@
 package org.example.datn_chillstay_2025.Controller;
 
 
+import lombok.RequiredArgsConstructor;
 import org.example.datn_chillstay_2025.Dto.GiamGiaDTO;
 import org.example.datn_chillstay_2025.Service.GiamGiaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
 @RequestMapping("/api/giamgia")
+@CrossOrigin
 public class GiamGiaController {
 
 

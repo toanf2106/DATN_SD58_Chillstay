@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/phong")
+@CrossOrigin
 public class PhongController {
     private final PhongService phongService;
 

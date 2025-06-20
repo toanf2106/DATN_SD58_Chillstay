@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("loai-homestay")
+@CrossOrigin
 public class LoaiHomeStayController {
 
     private final LoaiHomeStayService loaiHomeStayService;

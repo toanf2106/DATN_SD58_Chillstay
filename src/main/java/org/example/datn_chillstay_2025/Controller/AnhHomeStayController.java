@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/anh_homestay")
+@CrossOrigin
 public class AnhHomeStayController {
     private final AnhHomeStayService anhHomeStayService;
 

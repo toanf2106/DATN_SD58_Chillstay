@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/tien-nghi")
+@CrossOrigin
 public class TienNghiController {
     private final TienNghiService tienNghiService;
 
@@ -35,7 +36,7 @@ public class TienNghiController {
         return ResponseEntity.ok(tienNghi);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("update/{id}")
     public ResponseEntity<TienNghi> update(@RequestBody TienNghi tienNghi, @PathVariable int id ){
         tienNghiService.updateTienNghi(tienNghi, id);
         return ResponseEntity.ok(tienNghi);
@@ -50,5 +51,10 @@ public class TienNghiController {
     public ResponseEntity<String> delete(@PathVariable int id){
         tienNghiService.DeleteTienNghiById(id);
         return ResponseEntity.ok("Xóa thành công");
+    }
+    @PutMapping("/reset/{id}")
+    public ResponseEntity<String> resetTienNghi(@PathVariable Integer id) {
+        tienNghiService.khoiPhucTienNghi(id);
+        return ResponseEntity.ok("Khoi phuc Thanh Cong");
     }
 }
