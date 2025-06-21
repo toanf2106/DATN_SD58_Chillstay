@@ -7,6 +7,8 @@ import org.example.datn_chillstay_2025.Repository.TienNghiRepo;
 import org.example.datn_chillstay_2025.Service.TienNghiService;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -69,6 +71,11 @@ public class TienNghiServiceImpl implements TienNghiService {
   public TienNghi getTienNghiByTen(String tenTienNghi) {
     return tienNghiRepo.findByTenTienNghi(tenTienNghi)
         .orElseThrow(() -> new RuntimeException("Tien Nghi Not Found"));
+  }
+  @Override
+  public Page<TienNghi> searchTienNghi(String keyword, Boolean status, Pageable pageable) {
+    // QUAN TRỌNG: Phải truyền `pageable` vào hàm của repository
+    return tienNghiRepo.searchAndFilter(keyword, status, pageable);
   }
 
   @Override

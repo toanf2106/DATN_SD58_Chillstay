@@ -1,7 +1,7 @@
 package org.example.datn_chillstay_2025.Dto;
 
 import lombok.*;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -12,7 +12,11 @@ import java.time.LocalDate;
 @Builder
 public class GiamGiaDTO {
     private Integer id;
+    
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String maGiamGia;
+    
+    private String tenGiamGia;
     private String loaiGiamGia;
     private BigDecimal giaTri;
     private Integer homeStayId;

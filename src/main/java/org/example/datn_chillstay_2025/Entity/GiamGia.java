@@ -1,28 +1,21 @@
 package org.example.datn_chillstay_2025.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Nationalized;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
+@Table(name = "GiamGia")
 public class GiamGia {
 
   @Id
@@ -30,15 +23,18 @@ public class GiamGia {
   @Column(name = "ID", nullable = false)
   private Integer id;
 
-  @Size(max = 50)
+  @Size(max = 20)
   @Nationalized
-  @Column(name = "Ma_Giam_Gia", length = 50)
+  @Column(name = "Ma_Giam_Gia", length = 20)
   private String maGiamGia;
 
-  @Size(max = 20)
+  @Size(max = 255)
   @NotNull
   @Nationalized
-  @Column(name = "Loai_Giam_Gia", nullable = false, length = 20)
+  @Column(name = "Ten_Giam_Gia", nullable = false, length = 255)
+  private String tenGiamGia;
+
+  @Column(name = "Loai_Giam_Gia", nullable = false)
   private String loaiGiamGia;
 
   @NotNull
@@ -66,6 +62,6 @@ public class GiamGia {
   @NotNull
   @ColumnDefault("1")
   @Column(name = "Trang_Thai", nullable = false)
-  private Boolean trangThai = false;
+  private Boolean trangThai = true;
 
 }

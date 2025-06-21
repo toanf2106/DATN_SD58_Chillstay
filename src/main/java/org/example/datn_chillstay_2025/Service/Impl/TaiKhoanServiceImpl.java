@@ -6,6 +6,7 @@ import org.example.datn_chillstay_2025.Entity.TaiKhoan;
 import org.example.datn_chillstay_2025.Repository.TaiKhoanRepo;
 import org.example.datn_chillstay_2025.Service.TaiKhoanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,10 +17,13 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
     @Autowired
     private TaiKhoanRepo taiKhoanRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public TaiKhoan authenticate(String username, String password) {
         TaiKhoan user = taiKhoanRepository.findByTenDangNhap(username);
-        if (user != null && user.getMatKhau().equals(password)) {
+        if (user != null && passwordEncoder.matches(password, user.getMatKhau())) {
             return user;
         }
         return null;
