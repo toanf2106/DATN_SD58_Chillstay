@@ -6,18 +6,13 @@ import java.util.List;
 import java.util.Map;
 import org.example.datn_chillstay_2025.Entity.VatTu;
 import org.example.datn_chillstay_2025.Service.VatTuService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/vattu")
+@CrossOrigin
 public class VatTuController {
 
   private final VatTuService vatTuService;
@@ -53,6 +48,11 @@ public class VatTuController {
     vatTuService.deleteVatTu(id);
     return ResponseEntity.ok("Xoa Thanh Cong");
   }
+  @PutMapping("/reset/{id}")
+  public ResponseEntity<String> resetVatu(@PathVariable Integer id) {
+    vatTuService.khoiPhucVatTu(id);
+    return ResponseEntity.ok("Khoi phuc Thanh Cong");
+  }
 
   @GetMapping("/search")
   public ResponseEntity<List<VatTu>> findByTenOrId(@RequestParam Map<String, String> allParams) {
@@ -75,4 +75,10 @@ public class VatTuController {
 
     return ResponseEntity.ok(vatTuService.findByTenOrId(ten, id));
   }
+    @GetMapping("/paged")
+    public ResponseEntity<Page<VatTu>> getPagedVatTu(@RequestParam(defaultValue = "0",name = "page") int page) {
+      int size = 2;
+      Page<VatTu> paged = vatTuService.getVatTuByPage(page, size);
+      return ResponseEntity.ok(paged);
+    }
 }

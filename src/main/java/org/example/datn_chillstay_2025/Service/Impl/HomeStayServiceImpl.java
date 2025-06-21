@@ -91,4 +91,46 @@
 
 
 
+
+
+        @Override
+        public TienNghi addTienNghi(TienNghi tienNghi) {
+            return tienNghiRepo.save(tienNghi);
+        }
+
+        @Override
+        public TienNghi updateTienNghi(TienNghi tienNghi, Integer id) {
+            Optional <TienNghi> optional = tienNghiRepo.findById(id);
+            if (optional.isPresent()) {
+                TienNghi tienNghi1 = optional.get();
+                tienNghi1.setTenTienNghi(tienNghi.getTenTienNghi());
+                tienNghi1.setMoTa(tienNghi.getMoTa());
+                tienNghi1.setDonVi(tienNghi.getDonVi());
+                tienNghi1.setTrangThai(tienNghi.isTrangThai());
+                return tienNghiRepo.save(tienNghi1);
+            }else {
+                throw new RuntimeException("Tien Nghi Not Found");
+            }
+        }
+
+        @Override
+        public TienNghi getTienNghiByTen(String tenTienNghi) {
+            return tienNghiRepo.findByTenTienNghi(tenTienNghi)
+                    .orElseThrow(() -> new RuntimeException("Tien Nghi Not Found"));
+        }
+
+        @Override
+        public void khoiPhucTienNghi(Integer id) {
+            Optional<TienNghi> optional = tienNghiRepo.findById(id);
+            if (optional.isPresent()) {
+                TienNghi tienNghi = optional.get();
+                tienNghi.setTrangThai(true);
+                tienNghiRepo.save(tienNghi);
+            } else {
+                throw new RuntimeException("Tien Nghi Not Found");
+            }
+        }
+
+    }
+
   }

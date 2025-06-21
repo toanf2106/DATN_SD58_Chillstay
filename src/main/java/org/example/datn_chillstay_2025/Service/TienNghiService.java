@@ -16,4 +16,5 @@ public interface TienNghiService {
     TienNghi addTienNghi(TienNghi tienNghi);
     TienNghi updateTienNghi(TienNghi tienNghi, Integer id);
     TienNghi getTienNghiByTen(String tenTienNghi);
+    void khoiPhucTienNghi(Integer id);
 }
