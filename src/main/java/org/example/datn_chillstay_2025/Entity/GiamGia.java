@@ -34,10 +34,7 @@ public class GiamGia {
   @Column(name = "Ten_Giam_Gia", nullable = false, length = 255)
   private String tenGiamGia;
 
-  @Size(max = 20)
-  @NotNull
-  @Nationalized
-  @Column(name = "Loai_Giam_Gia", nullable = false, length = 20)
+  @Column(name = "Loai_Giam_Gia", nullable = false)
   private String loaiGiamGia;
 
   @NotNull
