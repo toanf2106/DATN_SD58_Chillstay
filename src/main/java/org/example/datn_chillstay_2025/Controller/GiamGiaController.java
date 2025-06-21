@@ -32,12 +32,24 @@ public class GiamGiaController {
     @PostMapping
     public ResponseEntity<?> createGiamGia(@RequestBody GiamGiaDTO giamGiaDTO) {
         try {
+            System.out.println("Received GiamGia data: " + giamGiaDTO);
+            System.out.println("LoaiGiamGia: " + giamGiaDTO.getLoaiGiamGia());
+            System.out.println("LoaiGiamGia type: " + (giamGiaDTO.getLoaiGiamGia() != null ? giamGiaDTO.getLoaiGiamGia().getClass().getName() : "null"));
+            
             GiamGiaDTO created = giamGiaService.createGiamGia(giamGiaDTO);
             return ResponseEntity.ok(created);
         } catch (IllegalArgumentException e) {
+            System.err.println("IllegalArgumentException: " + e.getMessage());
+            e.printStackTrace();
             Map<String, String> response = new HashMap<>();
             response.put("error", e.getMessage());
             return ResponseEntity.badRequest().body(response);
+        } catch (Exception e) {
+            System.err.println("Exception creating GiamGia: " + e.getMessage());
+            e.printStackTrace();
+            Map<String, String> response = new HashMap<>();
+            response.put("error", "Lỗi khi tạo mã giảm giá: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 

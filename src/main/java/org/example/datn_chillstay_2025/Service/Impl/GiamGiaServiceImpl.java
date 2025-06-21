@@ -137,16 +137,31 @@ public class GiamGiaServiceImpl implements GiamGiaService {
         if (loaiGiamGia == null) {
             throw new IllegalArgumentException("Loại giảm giá không được để trống");
         }
-        // Normalize to match database constraint
-        if ("Phần trăm".equalsIgnoreCase(loaiGiamGia) || "PhanTram".equalsIgnoreCase(loaiGiamGia)) {
-            loaiGiamGia = "Phần trăm";
-        } else if ("Số tiền".equalsIgnoreCase(loaiGiamGia) || "SoTien".equalsIgnoreCase(loaiGiamGia)) {
-            loaiGiamGia = "Số tiền";
+        
+        // Normalize to match database constraint - chỉ chấp nhận 'PhanTram' hoặc 'SoTien'
+        System.out.println("Original loaiGiamGia: " + loaiGiamGia);
+        
+        // Trim whitespace and normalize
+        loaiGiamGia = loaiGiamGia.trim();
+        
+        if ("Phần trăm".equals(loaiGiamGia) || 
+            "PhanTram".equals(loaiGiamGia) || 
+            "%".equals(loaiGiamGia) ||
+            "phan tram".equalsIgnoreCase(loaiGiamGia)) {
+            loaiGiamGia = "PhanTram";
+        } else if ("Số tiền".equals(loaiGiamGia) || 
+                   "SoTien".equals(loaiGiamGia) || 
+                   "so tien".equalsIgnoreCase(loaiGiamGia)) {
+            loaiGiamGia = "SoTien";
         } else {
-            throw new IllegalArgumentException("Loại giảm giá phải là 'Phần trăm' hoặc 'Số tiền'");
+            // Giá trị mặc định nếu không khớp
+            System.err.println("Invalid loaiGiamGia value: '" + loaiGiamGia + "'");
+            throw new IllegalArgumentException("Loại giảm giá phải là 'PhanTram' hoặc 'SoTien', nhận được: '" + loaiGiamGia + "'");
         }
+        
+        System.out.println("Normalized loaiGiamGia: " + loaiGiamGia);
+        
         giamGia.setLoaiGiamGia(loaiGiamGia);
-
         giamGia.setGiaTri(dto.getGiaTri());
         giamGia.setGiaTriToiThieu(dto.getGiaTriToiThieu());
         giamGia.setNgayBatDau(dto.getNgayBatDau());
@@ -181,7 +196,37 @@ public class GiamGiaServiceImpl implements GiamGiaService {
 
     private void updateEntityFromDTO(GiamGia giamGia, GiamGiaDTO dto) {
         giamGia.setTenGiamGia(dto.getTenGiamGia());
-        giamGia.setLoaiGiamGia(dto.getLoaiGiamGia());
+        
+        // Validate and normalize loaiGiamGia
+        String loaiGiamGia = dto.getLoaiGiamGia();
+        if (loaiGiamGia == null) {
+            throw new IllegalArgumentException("Loại giảm giá không được để trống");
+        }
+        
+        // Normalize to match database constraint - chỉ chấp nhận 'PhanTram' hoặc 'SoTien'
+        System.out.println("Update - Original loaiGiamGia: " + loaiGiamGia);
+        
+        // Trim whitespace and normalize
+        loaiGiamGia = loaiGiamGia.trim();
+        
+        if ("Phần trăm".equals(loaiGiamGia) || 
+            "PhanTram".equals(loaiGiamGia) || 
+            "%".equals(loaiGiamGia) ||
+            "phan tram".equalsIgnoreCase(loaiGiamGia)) {
+            loaiGiamGia = "PhanTram";
+        } else if ("Số tiền".equals(loaiGiamGia) || 
+                   "SoTien".equals(loaiGiamGia) || 
+                   "so tien".equalsIgnoreCase(loaiGiamGia)) {
+            loaiGiamGia = "SoTien";
+        } else {
+            // Giá trị mặc định nếu không khớp
+            System.err.println("Update - Invalid loaiGiamGia value: '" + loaiGiamGia + "'");
+            throw new IllegalArgumentException("Loại giảm giá phải là 'PhanTram' hoặc 'SoTien', nhận được: '" + loaiGiamGia + "'");
+        }
+        
+        System.out.println("Update - Normalized loaiGiamGia: " + loaiGiamGia);
+        
+        giamGia.setLoaiGiamGia(loaiGiamGia);
         giamGia.setGiaTri(dto.getGiaTri());
         giamGia.setGiaTriToiThieu(dto.getGiaTriToiThieu());
         giamGia.setNgayBatDau(dto.getNgayBatDau());
