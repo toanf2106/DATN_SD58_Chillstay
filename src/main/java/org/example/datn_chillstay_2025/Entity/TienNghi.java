@@ -25,7 +25,6 @@ public class TienNghi {
     private String tenTienNghi;
 
     @Nationalized
-    @Lob
     @Column(name = "Mo_Ta")
     private String moTa;
 

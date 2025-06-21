@@ -25,18 +25,14 @@ public class AnhTinTuc {
   @Column(name = "ID", nullable = false)
   private Integer id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne
   @JoinColumn(name = "Tin_tuc_ID")
-  private org.example.datn_chillstay_2025.Entity.TinTuc tinTuc;
+  private TinTuc tinTuc;
 
-  @Size(max = 255)
-  @Nationalized
   @Column(name = "Duong_Dan_Anh")
   private String duongDanAnh;
 
-  @NotNull
-  @ColumnDefault("1")
   @Column(name = "Trang_Thai", nullable = false)
-  private Boolean trangThai = false;
+  private Boolean trangThai = true;
 
 }

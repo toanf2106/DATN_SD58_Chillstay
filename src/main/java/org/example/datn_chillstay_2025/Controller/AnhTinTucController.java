@@ -39,24 +39,19 @@ public class AnhTinTucController {
     }
 
 
+    // ✅ Xoá mềm ảnh tin tức (trangThai = false)
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable Integer id) {
-        if (!anhTinTucRepo.existsById(id)) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    "Xoá thất bại: Không tìm thấy ảnh tin tức với ID = " + id
-            );
-        }
-
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
         anhTinTucService.delete(id);
-        return ResponseEntity.ok("Xoá ảnh tin tức thành công ");
+        return ResponseEntity.ok("Đã xoá ảnh (xoá mềm)");
     }
 
-
+    // ✅ Lấy danh sách ảnh còn hiệu lực (trangThai = true)
     @GetMapping("/hien-thi")
-    public ResponseEntity<List<AnhTinTucResponseDto>> getAll() {
+    public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(anhTinTucService.getAll());
     }
+
 
     @GetMapping("/detail/{id}")
     public ResponseEntity<AnhTinTucResponseDto> detail(@PathVariable Integer id) {
