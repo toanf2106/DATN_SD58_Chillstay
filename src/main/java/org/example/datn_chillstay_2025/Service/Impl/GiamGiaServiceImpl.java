@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,8 +49,20 @@ public class GiamGiaServiceImpl implements GiamGiaService {
 
     @Override
     public Page<GiamGiaDTO> getAllGiamGia(Pageable pageable) {
-        Page<GiamGia> giamGiaPage = giamGiaRepository.findByTrangThaiTrue(pageable);
+        Page<GiamGia> giamGiaPage = giamGiaRepository.findAll(pageable);
         return giamGiaPage.map(this::mapToDTO);
+    }
+
+    @Override
+    public Page<GiamGiaDTO> getValidVouchers(Pageable pageable) {
+        return giamGiaRepository.findValidVouchers(pageable)
+                .map(this::mapToDTO);
+    }
+
+    @Override
+    public Page<GiamGiaDTO> getExpiredVouchers(Pageable pageable) {
+        return giamGiaRepository.findExpiredVouchers(pageable)
+                .map(this::mapToDTO);
     }
 
     @Override
@@ -62,8 +75,54 @@ public class GiamGiaServiceImpl implements GiamGiaService {
 
     @Override
     public List<GiamGiaDTO> findByTenGiamGia(String tenGiamGia) {
-        return giamGiaRepository.findByTenGiamGiaContainingIgnoreCaseAndTrangThaiTrue(tenGiamGia)
+        return giamGiaRepository.findByTenGiamGiaContainingIgnoreCase(tenGiamGia)
                 .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<GiamGiaDTO> findByTenGiamGiaAndValid(String tenGiamGia) {
+        return giamGiaRepository.findByTenGiamGiaAndValid(tenGiamGia, LocalDate.now())
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<GiamGiaDTO> findByTenGiamGiaAndExpired(String tenGiamGia) {
+        return giamGiaRepository.findByTenGiamGiaAndExpired(tenGiamGia, LocalDate.now())
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<GiamGiaDTO> searchByMultipleFields(String searchTerm) {
+        System.out.println("Service - searchByMultipleFields with term: " + searchTerm);
+        List<GiamGia> results = giamGiaRepository.searchByMultipleFields(searchTerm);
+        System.out.println("Found " + results.size() + " results");
+        return results.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<GiamGiaDTO> searchByMultipleFieldsAndValid(String searchTerm) {
+        System.out.println("Service - searchByMultipleFieldsAndValid with term: " + searchTerm);
+        List<GiamGia> results = giamGiaRepository.searchByMultipleFieldsAndValid(searchTerm);
+        System.out.println("Found " + results.size() + " valid results");
+        return results.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<GiamGiaDTO> searchByMultipleFieldsAndExpired(String searchTerm) {
+        System.out.println("Service - searchByMultipleFieldsAndExpired with term: " + searchTerm);
+        List<GiamGia> results = giamGiaRepository.searchByMultipleFieldsAndExpired(searchTerm);
+        System.out.println("Found " + results.size() + " expired results");
+        return results.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
@@ -80,11 +139,11 @@ public class GiamGiaServiceImpl implements GiamGiaService {
         }
         // Normalize to match database constraint
         if ("Phần trăm".equalsIgnoreCase(loaiGiamGia) || "PhanTram".equalsIgnoreCase(loaiGiamGia)) {
-            loaiGiamGia = "PhanTram";
+            loaiGiamGia = "Phần trăm";
         } else if ("Số tiền".equalsIgnoreCase(loaiGiamGia) || "SoTien".equalsIgnoreCase(loaiGiamGia)) {
-            loaiGiamGia = "SoTien";
+            loaiGiamGia = "Số tiền";
         } else {
-            throw new IllegalArgumentException("Loại giảm giá phải là 'PhanTram' hoặc 'SoTien'");
+            throw new IllegalArgumentException("Loại giảm giá phải là 'Phần trăm' hoặc 'Số tiền'");
         }
         giamGia.setLoaiGiamGia(loaiGiamGia);
 
@@ -121,9 +180,6 @@ public class GiamGiaServiceImpl implements GiamGiaService {
     }
 
     private void updateEntityFromDTO(GiamGia giamGia, GiamGiaDTO dto) {
-        // Không cập nhật maGiamGia từ DTO vì nó là READ_ONLY
-        // giamGia.setMaGiamGia(dto.getMaGiamGia());
-        
         giamGia.setTenGiamGia(dto.getTenGiamGia());
         giamGia.setLoaiGiamGia(dto.getLoaiGiamGia());
         giamGia.setGiaTri(dto.getGiaTri());
