@@ -1,6 +1,7 @@
 package org.example.datn_chillstay_2025.Service.Impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.example.datn_chillstay_2025.Dto.Request.AnhTinTucRequestDto;
 import org.example.datn_chillstay_2025.Dto.Response.AnhTinTucResponseDto;
@@ -57,13 +58,17 @@ public class AnhTinTucServiceImpl implements AnhTinTucService {
 
     @Override
     public void delete(Integer id) {
-        anhTinTucRepo.deleteById(id);
+        Optional<AnhTinTuc> optional = anhTinTucRepo.findById(id);
+        if (optional.isPresent()) {
+            AnhTinTuc entity = optional.get();
+            entity.setTrangThai(false); // Xoá mềm: đánh dấu là không còn hoạt động
+            anhTinTucRepo.save(entity);
+        } else {
+            throw new RuntimeException("Không tìm thấy ảnh tin tức với id: " + id);
+        }
     }
 
-    @Override
-    public List<AnhTinTucResponseDto> getAll() {
-        return anhTinTucRepo.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
-    }
+
 
     @Override
     public AnhTinTucResponseDto detail(Integer id) {
@@ -71,4 +76,12 @@ public class AnhTinTucServiceImpl implements AnhTinTucService {
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy ảnh tin tức"));
         return convertToDto(entity);
     }
+    @Override
+    public List<AnhTinTucResponseDto> getAll() {
+        return anhTinTucRepo.findAllByTrangThaiTrue()
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
 }

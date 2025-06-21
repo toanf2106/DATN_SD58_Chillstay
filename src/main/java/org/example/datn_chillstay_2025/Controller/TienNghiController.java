@@ -1,13 +1,17 @@
 package org.example.datn_chillstay_2025.Controller;
 
-import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 import org.example.datn_chillstay_2025.Entity.TienNghi;
 import org.example.datn_chillstay_2025.Service.TienNghiService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageImpl;
+
+
 
 import java.util.List;
 
@@ -51,4 +55,22 @@ public class TienNghiController {
         tienNghiService.DeleteTienNghiById(id);
         return ResponseEntity.ok("Xóa thành công");
     }
+
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<TienNghi>> search(
+            @RequestParam(defaultValue = "") String keyword,
+            @RequestParam(required = false) Boolean status,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size // Chắc chắn size khớp với frontend
+    ) {
+        // Tạo đối tượng Pageable từ page và size
+        Pageable pageable = PageRequest.of(page, size);
+
+        // Gọi service và truyền ĐẦY ĐỦ tham số, bao gồm cả pageable
+        Page<TienNghi> resultPage = tienNghiService.searchTienNghi(keyword, status, pageable);
+
+        return ResponseEntity.ok(resultPage);
+    }
+
 }

@@ -11,6 +11,10 @@ import org.example.datn_chillstay_2025.Repository.NhanVienRepo;
 import org.example.datn_chillstay_2025.Repository.TinTucRepo;
 import org.example.datn_chillstay_2025.Service.TinTucService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -40,7 +44,7 @@ public class TinTucServiceImpl implements TinTucService {
         TinTuc tinTuc = new TinTuc();
         tinTuc.setNoiDung(dto.getNoiDung());
         tinTuc.setTrangThai(dto.getTrangThai());
-        tinTuc.setNgayDang(new Date());
+//        tinTuc.setNgayDang(new Date());
         tinTuc.setAnhBia(dto.getAnhBia());
         tinTuc.setNhanVien(nv);
 
@@ -81,7 +85,34 @@ public class TinTucServiceImpl implements TinTucService {
     @Override
     public void delete(Integer id) {
         TinTuc tinTuc = tinTucRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy tin tức"));
-        tinTucRepo.delete(tinTuc);
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy tin tức với id: " + id));
+        tinTuc.setTrangThai(false); // đánh dấu đã xoá
+        tinTucRepo.save(tinTuc);
     }
+
+
+    @Override
+    public Page<TinTucResponseDto> getAllWithPaginationAndSearch(int page, int size, String tieuDe, Date ngayDang) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+
+        Page<TinTuc> tinTucs;
+
+        if (ngayDang != null) {
+            tinTucs = tinTucRepo.findByMaTinTucContainingIgnoreCaseAndNgayDang(tieuDe, ngayDang, pageable);
+        } else {
+            tinTucs = tinTucRepo.findByMaTinTucContainingIgnoreCase(tieuDe, pageable);
+        }
+
+        return tinTucs.map(tinTuc -> new TinTucResponseDto(
+                tinTuc.getId(),
+                tinTuc.getMaTinTuc(),
+                tinTuc.getNoiDung(),
+                tinTuc.getTrangThai(),
+                tinTuc.getNgayDang(),
+                tinTuc.getNhanVien() != null ? tinTuc.getNhanVien().getId() : null,
+                tinTuc.getAnhBia()
+        ));
+
+    }
+
 }

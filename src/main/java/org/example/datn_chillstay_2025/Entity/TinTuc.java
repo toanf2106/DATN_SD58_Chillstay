@@ -28,32 +28,23 @@ public class TinTuc {
   @Column(name = "ID", nullable = false)
   private Integer id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne
   @JoinColumn(name = "Nhan_vien_ID")
   private NhanVien nhanVien;
 
-  @Size(max = 50)
-  @Nationalized
   @Column(name = "Ma_tin_tuc", length = 50)
   private String maTinTuc;
 
-  @Nationalized
-  @Lob
   @Column(name = "Noi_dung")
   private String noiDung;
 
-  @ColumnDefault("getdate()")
   @Column(name = "Ngay_dang")
   private Date ngayDang;
 
-  @Nationalized
-  @Lob
   @Column(name = "Anh_Bia")
   private String anhBia;
 
-  @NotNull
-  @ColumnDefault("1")
   @Column(name = "Trang_Thai", nullable = false)
-  private Boolean trangThai = false;
+  private Boolean trangThai = true;
 
 }
